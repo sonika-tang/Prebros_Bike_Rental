@@ -1,0 +1,111 @@
+{
+    "users": {
+        "user_001": {
+            "userId": "user_001",
+            "name": "Sar Sovannita",
+            "email": "sarsovannita4@gmail.com",
+            "activePass": {
+                "passId": "pass_day_01",
+                "type": "day",
+                "price": 2.00,
+                "startDate": "2026-04-13T08:00:00Z",
+                "endDate": "2026-04-14T08:00:00Z",
+                "isActive": true
+            }
+        },
+        "user_002": {
+            "userId": "user_002",
+            "name": "Sok Makara",
+            "email": "makara.sok@gmail.com",
+            "activePass": null
+        }
+    },
+    "stations": {
+        "station_pp_01": {
+            "stationId": "station_pp_01",
+            "name": "Wat Phnom Station",
+            "latitude": 11.576089,
+            "longitude": 104.923055
+        },
+        "station_pp_02": {
+            "stationId": "station_pp_02",
+            "name": "Independence Monument",
+            "latitude": 11.556400,
+            "longitude": 104.928200
+        },
+        "station_pp_03": {
+            "stationId": "station_pp_03",
+            "name": "Royal Palace Riverside",
+            "latitude": 11.564500,
+            "longitude": 104.931500
+        }
+    },
+    "bikes": {
+        "bike_20251": {
+            "bikeId": "bike_20251",
+            "stationId": "station_pp_01",
+            "status": "available"
+        },
+        "bike_20252": {
+            "bikeId": "bike_20252",
+            "stationId": "station_pp_01",
+            "status": "pending"
+        },
+        "bike_20253": {
+            "bikeId": "bike_20253",
+            "stationId": "station_pp_02",
+            "type": "Electric Bike",
+            "status": "booked"
+        },
+        "bike_20254": {
+            "bikeId": "bike_20254",
+            "stationId": "station_pp_03",
+            "type": "City Bike",
+            "status": "available"
+        }
+    },
+    "bookings": {
+        "book_9901": {
+            "bookingId": "book_9901",
+            "bikeId": "bike_20252",
+            "userId": "user_001",
+            "stationName": "Wat Phnom Station",
+            "bookingTime": "2026-04-13T10:30:15Z",
+            "status": "pending"
+        }
+    },
+    "passes_catalog": {
+        "cat_day": {
+            "passId": "cat_day",
+            "type": "day",
+            "price": 2.00,
+            "startDate": null,
+            "endDate": null,
+            "isActive": false
+        },
+        "cat_weekly": {
+            "passId": "cat_weekly",
+            "type": "weekly",
+            "price": 5.00,
+            "startDate": null,
+            "endDate": null,
+            "isActive": false
+        },
+        "cat_monthly": {
+            "passId": "cat_monthly",
+            "type": "monthly",
+            "price": 15.00,
+            "startDate": null,
+            "endDate": null,
+            "isActive": false
+        },
+        "cat_annual": {
+            "passId": "cat_annual",
+            "type": "annual",
+            "price": 150.00,
+            "startDate": null,
+            "endDate": null,
+            "isActive": false
+        }
+    }
+}
