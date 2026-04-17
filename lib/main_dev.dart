@@ -1,4 +1,6 @@
-import 'package:bike_rental/ui/states/active_pass_state.dart';
+import 'package:bike_rental/data/repositories/station/station_repository.dart';
+import 'package:bike_rental/data/repositories/station/station_repository_mock.dart';
+import 'package:bike_rental/ui/states/app_theme_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -9,11 +11,12 @@ List<InheritedProvider> get devProviders {
   return [
     // 1 - Inject repositories
     //Provider<PassRepository>(create: (_) => MockPassRepository()),
-    //Provider<StationRepository>(create: (_) => MockStationRepository()),
+    Provider<StationRepository>(create: (_) => StationRepositoryMock()),
     //Provider<BikeRepository>(create: (_) => MockBikeRepository()),
 
     // 2 - Inject global states
-    ChangeNotifierProvider<GlobalPassState>(create: (_) => GlobalPassState()),
+    // ChangeNotifierProvider<GlobalPassState>(create: (_) => GlobalPassState()),
+    ChangeNotifierProvider<AppThemeState>(create: (_) => AppThemeState()),
   ];
 }
 
