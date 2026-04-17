@@ -1,3 +1,4 @@
+import 'package:bike_rental/models/bike.dart';
 import 'package:bike_rental/models/station.dart';
 
 class StationDto {
@@ -7,7 +8,7 @@ class StationDto {
   static const String longitudeKey = 'longitude';
   static const String bikesKey = 'bikes';
 
-  static Station fromJson(String id, Map<String, dynamic> json) {
+  static Station fromJson(String id, Map<String, dynamic> json, {List<Bike> bikes = const []}) {
     assert(json[idKey] is String);
     assert(json[nameKey] is String);
     assert(json[latitudeKey] is double);
@@ -18,7 +19,7 @@ class StationDto {
       name: json[nameKey],
       latitude: double.parse(json[latitudeKey].toString()),
       longitude: double.parse(json[longitudeKey].toString()),
-      bikes: [],
+      bikes: bikes,
     );
   }
 
