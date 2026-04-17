@@ -1,6 +1,7 @@
 import 'package:bike_rental/ui/screens/map_screen/view_model/map_vm.dart';
 import 'package:bike_rental/ui/screens/map_screen/widgets/station_list_view.dart';
 import 'package:bike_rental/ui/screens/booking_screen/station_detail_screen.dart';
+import 'package:bike_rental/ui/utils/async_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -41,7 +42,10 @@ class MapContent extends StatelessWidget {
               ),
 
             // Loading overlay
-            if (vm.isLoading) const Center(child: CircularProgressIndicator()),
+            if (vm.stationsState.state == AsyncValueState.loading) 
+              const Center(child: CircularProgressIndicator())
+            else if (vm.stationsState.state == AsyncValueState.error)
+              Center(child: Text('Error: ${vm.stationsState.error}')),
           ],
         ),
       ),
