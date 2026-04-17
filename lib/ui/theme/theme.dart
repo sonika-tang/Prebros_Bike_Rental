@@ -21,6 +21,7 @@ final TextTheme appTextTheme = TextTheme(
 // --- LIGHT THEME ---
 final ThemeData appTheme = ThemeData(
   brightness: Brightness.light,
+  textTheme: appTextTheme, // Link text theme
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
     primary: Color(0xFFD05F27), // Figma main color
@@ -44,6 +45,7 @@ final ThemeData appTheme = ThemeData(
 // --- DARK THEME ---
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
+  textTheme: appTextTheme, // Link text theme
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xFFD05F27),

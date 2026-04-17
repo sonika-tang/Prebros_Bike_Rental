@@ -58,7 +58,7 @@ class StationDetailScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Divider(thickness: 1, height: 1, color: Colors.grey[300]),
+            child: Divider(thickness: 1, height: 1, color: Theme.of(context).dividerColor),
           ),
           Expanded(
             child: ListView.builder(
@@ -129,10 +129,10 @@ class StationDetailScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+                      border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.2)),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.05),
+                          color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),

@@ -85,19 +85,19 @@ class MapContent extends StatelessWidget {
                       ? Theme.of(context).colorScheme.secondary
                       : Theme.of(context).colorScheme.primary,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
-                  boxShadow: const [
+                  border: Border.all(color: Theme.of(context).colorScheme.onPrimary, width: 2),
+                  boxShadow: [
                     BoxShadow(
-                      color: Colors.black26,
+                      color: Colors.black.withValues(alpha: 0.26),
                       blurRadius: 4,
-                      offset: Offset(0, 2),
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
                 child: Text(
                   '${station.availableBikesCount}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -124,11 +124,11 @@ class MapContent extends StatelessWidget {
           height: 20,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.blueAccent,
+              color: Theme.of(context).colorScheme.primary,
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 3),
-              boxShadow: const [
-                BoxShadow(color: Colors.black26, blurRadius: 4),
+              border: Border.all(color: Theme.of(context).colorScheme.onPrimary, width: 3),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withValues(alpha: 0.26), blurRadius: 4),
               ],
             ),
           ),
@@ -168,11 +168,11 @@ class MapContent extends StatelessWidget {
         onChanged: vm.setSearchQuery,
         decoration: InputDecoration(
           hintText: "Search for station...",
-          prefixIcon: const Icon(Icons.search, color: Colors.black54),
+          prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54)),
           suffixIcon: IconButton(
             icon: Icon(
               vm.isMapView ? Icons.list : Icons.map,
-              color: Colors.black54,
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
             ),
             onPressed: vm.toggleView,
           ),
@@ -236,7 +236,7 @@ class MapContent extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.pedal_bike, color: Colors.white, size: 40),
+                Icon(Icons.pedal_bike, color: Theme.of(context).colorScheme.onPrimary, size: 40),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,14 +245,14 @@ class MapContent extends StatelessWidget {
                     Text(
                       "Bike ID: ${ride['bikeId']}",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       "Station: ${ride['stationName']}\nBike slot: ${ride['slot']}",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                       ),
                     ),
                   ],
