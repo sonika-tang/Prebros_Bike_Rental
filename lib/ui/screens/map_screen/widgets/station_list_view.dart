@@ -1,5 +1,5 @@
 import 'package:bike_rental/ui/screens/map_screen/view_model/map_vm.dart';
-import 'package:bike_rental/ui/screens/booking_screen/station_detail_screen.dart';
+import 'package:bike_rental/ui/screens/station_details_screen/station_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
