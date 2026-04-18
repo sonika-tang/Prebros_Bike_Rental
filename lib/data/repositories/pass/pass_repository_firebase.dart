@@ -19,6 +19,7 @@ class PassRepositoryFirebase implements PassRepository {
         data.forEach((key, value) {
           passes.add(PassDto.fromJson(key, value));
         });
+        passes.sort((a, b) => a.price.compareTo(b.price));
         return passes;
       } else {
         throw Exception('Failed to load passes: ${response.statusCode}');

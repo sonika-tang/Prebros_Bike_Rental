@@ -49,7 +49,7 @@ class PlanCard extends StatelessWidget {
               Container(
                 width: 1,
                 height: 60,
-                color: Colors.grey.shade300,
+                color: Theme.of(context).dividerColor,
                 margin: const EdgeInsets.symmetric(horizontal: 12),
               ),
               Expanded(

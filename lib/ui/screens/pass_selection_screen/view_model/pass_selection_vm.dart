@@ -70,7 +70,7 @@ class PassSelectionViewModel extends ChangeNotifier {
       // Update global state so UI reflects immediately
       globalPassState.setActivePass(updatedPass);
     } catch (e) {
-      // TODO: handle error (e.g., show snackbar or log)
+      print(e);
     }
     notifyListeners();
   }

@@ -34,8 +34,8 @@ class PaymentSuccessScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundColor: Colors.green,
-              child: const Icon(Icons.check, color: Colors.white, size: 50),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              child: Icon(Icons.check, color: Theme.of(context).colorScheme.onSecondary, size: 50),
             ),
             const SizedBox(height: 20),
 

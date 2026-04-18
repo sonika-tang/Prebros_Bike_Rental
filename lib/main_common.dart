@@ -1,6 +1,7 @@
 import 'package:bike_rental/ui/screens/map_screen/map_screen.dart';
 import 'package:bike_rental/ui/screens/pass_selection_screen/pass_selection_screen.dart';
 import 'package:bike_rental/ui/screens/profile_screen/profile_screen.dart';
+import 'package:bike_rental/ui/states/app_theme_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'ui/theme/theme.dart';
@@ -23,17 +24,20 @@ class _MyAppState extends State<MyApp> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    HomeScreen(),
+    MapScreen(),
     SubscriptionScreen(),
     ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final themeState = context.watch<AppThemeState>();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       darkTheme: darkTheme,
+      themeMode: themeState.themeMode,
       home: Scaffold(
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(

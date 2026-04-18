@@ -1,5 +1,6 @@
 import 'package:bike_rental/data/repositories/user/user_repository.dart';
 import 'package:bike_rental/ui/screens/profile_screen/view_model/profile_vm.dart';
+import 'package:bike_rental/ui/states/app_theme_state.dart';
 import 'package:bike_rental/ui/utils/async_value.dart';
 import 'package:bike_rental/ui/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userRepo = Provider.of<UserRepository>(context, listen: false);
+    final themeState = context.watch<AppThemeState>();
 
     return ChangeNotifierProvider(
       create: (_) => UserViewModel(userRepository: userRepo),
@@ -27,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
               content = Center(
                 child: Text(
                   'Error: ${asyncValue.error}',
-                  style: const TextStyle(color: Colors.red),
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
               );
               break;
@@ -83,22 +85,22 @@ class ProfileScreen extends StatelessWidget {
                   SwitchListTile(
                     secondary: const Icon(Icons.dark_mode),
                     title: const Text("Dark mode"),
-                    value: false, // TODO: bind to theme state
+                    value: themeState.isDarkMode,
                     onChanged: (val) {
-                      // TODO: toggle theme
+                      themeState.toggleTheme();
                     },
                   ),
 
                   // Logout
                   ListTile(
-                    leading: const Icon(Icons.logout, color: Colors.red),
-                    title: const Text(
+                    leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.error),
+                    title: Text(
                       "Logout",
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: Theme.of(context).colorScheme.error),
                     ),
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.arrow_forward_ios,
-                      color: Colors.red,
+                      color: Theme.of(context).colorScheme.error,
                     ),
                     onTap: () {
                       // TODO: implement logout
