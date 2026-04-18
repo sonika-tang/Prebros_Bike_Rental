@@ -1,3 +1,5 @@
+import 'package:bike_rental/ui/screens/bike_details_screen/bike_details_screen.dart';
+import 'package:bike_rental/ui/states/active_pass_state.dart';
 import 'package:bike_rental/ui/widgets/bike_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -78,7 +80,18 @@ class StationDetailsContent extends StatelessWidget {
                         bike: bike, 
                         index: index,
                         onTap: () {
-                          
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => BikeDetailScreen(
+                                bike: bike,
+                                // Pass the active pass from global state
+                                activePass: context
+                                    .read<GlobalPassState>()
+                                    .activePass,
+                              ),
+                            ),
+                          );
                         },
                       );
                     },
