@@ -63,20 +63,21 @@ class SubscriptionScreen extends StatelessWidget {
                   final isActive =
                       context.watch<GlobalPassState>().activePass?.passId ==
                       pass.passId;
-
                   return PlanCard(
                     pass: pass,
                     isActive: isActive,
                     onSelect: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ChangeNotifierProvider.value(
-                            value: vm,
-                            child: PlanDetailsScreen(pass: pass),
+                      if (!isActive) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider.value(
+                              value: vm,
+                              child: PlanDetailsScreen(pass: pass),
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     },
                   );
                 },
