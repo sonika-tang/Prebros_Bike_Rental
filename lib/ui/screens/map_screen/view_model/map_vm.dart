@@ -41,14 +41,6 @@ class MapVm extends ChangeNotifier {
   bool get isMapView => _isMapView;
   Map<String, dynamic>? get activeRide => _activeRide;
 
-  void bookBike(String bikeId, String stationName) {
-    _activeRide = {
-      'bikeId': bikeId,
-      'stationName': stationName,
-    };
-    notifyListeners();
-  }
-
   void returnBike() {
     _activeRide = null;
     notifyListeners();
@@ -115,16 +107,6 @@ class MapVm extends ChangeNotifier {
 
   void setSearchQuery(String query) {
     _searchQuery = query;
-    notifyListeners();
-  }
-
-  void selectLocationAsStation(Station station) {
-    _selectStation = station;
-    notifyListeners();
-  }
-
-  void clearSelection() {
-    _selectStation = null;
     notifyListeners();
   }
 }
