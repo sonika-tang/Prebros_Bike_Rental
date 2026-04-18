@@ -1,3 +1,4 @@
+import 'package:bike_rental/models/bike.dart';
 import 'package:bike_rental/ui/screens/bike_details_screen/bike_details_screen.dart';
 import 'package:bike_rental/ui/states/active_pass_state.dart';
 import 'package:bike_rental/ui/widgets/bike_tile.dart';
@@ -80,18 +81,29 @@ class StationDetailsContent extends StatelessWidget {
                         bike: bike, 
                         index: index,
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BikeDetailScreen(
-                                bike: bike,
-                                // Pass the active pass from global state
-                                activePass: context
-                                    .read<GlobalPassState>()
-                                    .activePass,
+                          if (bike.status == BikeStatus.available) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BikeDetailScreen(
+                                  bike: bike,
+                                  // Pass the active pass from global state
+                                  activePass: context
+                                      .read<GlobalPassState>()
+                                      .activePass,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          } else if (bike.status == BikeStatus.pending) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "the bike is being view or in process of booking with other user",
+                                ),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
                         },
                       );
                     },

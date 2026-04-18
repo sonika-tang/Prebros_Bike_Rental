@@ -15,11 +15,17 @@ class BikeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAvailable = bike.status == BikeStatus.available;
-    final statusColor = isAvailable
+    final BikeStatus status = bike.status;
+    final statusColor = status == BikeStatus.available
         ? Theme.of(context).colorScheme.secondary
-        : Theme.of(context).colorScheme.primary;
-    final statusText = isAvailable ? "Available" : "Pending";
+        : status == BikeStatus.pending
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).disabledColor;
+    final statusText = status == BikeStatus.available
+        ? "Available"
+        : status == BikeStatus.pending
+            ? "Pending"
+            : "Booked";
 
     return GestureDetector(
       onTap: onTap,
