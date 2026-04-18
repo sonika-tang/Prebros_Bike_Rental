@@ -1,4 +1,5 @@
 import 'package:bike_rental/data/repositories/user/user_repository.dart';
+import 'package:bike_rental/ui/screens/your_plan_screen/your_plan_screen.dart';
 import 'package:bike_rental/ui/screens/profile_screen/view_model/profile_vm.dart';
 import 'package:bike_rental/ui/states/app_theme_state.dart';
 import 'package:bike_rental/ui/utils/async_value.dart';
@@ -72,8 +73,15 @@ class ProfileScreen extends StatelessWidget {
                       user.activePass?.typeName ?? "No active pass",
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const YourPlanScreen(),
+                        ),
+                      );
+                    },
                   ),
-
                   // History
                   ListTile(
                     leading: const Icon(Icons.history),
@@ -93,10 +101,15 @@ class ProfileScreen extends StatelessWidget {
 
                   // Logout
                   ListTile(
-                    leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.error),
+                    leading: Icon(
+                      Icons.logout,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                     title: Text(
                       "Logout",
-                      style: TextStyle(color: Theme.of(context).colorScheme.error),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                     ),
                     trailing: Icon(
                       Icons.arrow_forward_ios,
