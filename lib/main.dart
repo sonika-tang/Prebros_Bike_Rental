@@ -1,3 +1,13 @@
+import 'package:bike_rental/data/repositories/bike/bike_repository.dart';
+import 'package:bike_rental/data/repositories/bike/bike_repository_firebase.dart';
+import 'package:bike_rental/data/repositories/station/station_repository.dart';
+import 'package:bike_rental/data/repositories/station/station_repository_firebase.dart';
+import 'package:bike_rental/ui/states/app_theme_state.dart';
+import 'package:bike_rental/data/repositories/pass/pass_repository.dart';
+import 'package:bike_rental/data/repositories/pass/pass_repository_firebase.dart';
+import 'package:bike_rental/data/repositories/user/user_repository.dart';
+import 'package:bike_rental/data/repositories/user/user_repository_firebase.dart';
+import 'package:bike_rental/ui/states/active_pass_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -7,12 +17,14 @@ import 'main_common.dart';
 List<InheritedProvider> get prodProviders {
   return [
     // 1 - Inject repositories
-    //Provider<PassRepository>(create: (_) => PassRepositoryFirebase()),
-    //Provider<StationRepository>(create: (_) => StationRepositoryFirebase()),
-    //Provider<BikeRepository>(create: (_) => BikeRepositoryFirebase()),
+    Provider<PassRepository>(create: (_) => PassRepositoryFirebase()),
+    Provider<UserRepository>(create: (_) => UserRepositoryFirebase()),
+    Provider<StationRepository>(create: (_) => StationRepositoryFirebase()),
+    Provider<BikeRepository>(create: (_) => BikeRepositoryFirebase()),
 
     // 2 - Inject global states
-    //ChangeNotifierProvider<GlobalPassState>(create: (_) => GlobalPassState()),
+    ChangeNotifierProvider<GlobalPassState>(create: (_) => GlobalPassState()),
+    ChangeNotifierProvider<AppThemeState>(create: (_) => AppThemeState()),
   ];
 }
 

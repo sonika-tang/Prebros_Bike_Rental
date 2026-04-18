@@ -1,15 +1,18 @@
+import 'package:bike_rental/ui/screens/map_screen/view_model/map_vm.dart';
+import 'package:bike_rental/ui/screens/map_screen/widgets/map_content.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class MapScreen extends StatelessWidget {
+  const MapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Welcome to Bike Rental!',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
+    return ChangeNotifierProvider<MapVm>(
+      create: (context) => MapVm(
+        repository: context.read(),
+      )..init(),
+      child: const MapContent(),
     );
   }
 }
