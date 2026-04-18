@@ -65,13 +65,13 @@ class BikeDetailContent extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      const Text("Slot 1", style: TextStyle(color: Colors.grey)),
+                      // const SizedBox(height: 4),
+                      // const Text("Slot 1", style: TextStyle(color: Colors.grey)),
                 
                       const SizedBox(height: 20),
 
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
                           children: [
                             _buildInfoRow("Type", "City Bike"),

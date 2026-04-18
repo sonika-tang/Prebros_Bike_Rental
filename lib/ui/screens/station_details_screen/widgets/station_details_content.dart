@@ -53,7 +53,7 @@ class StationDetailsContent extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Bike available: ${vm.bikes.length}",
+                        "Bike available: ${vm.station.availableBikesCount}",
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               color: Theme.of(context).colorScheme.primary,
