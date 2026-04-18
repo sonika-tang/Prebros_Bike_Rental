@@ -1,3 +1,5 @@
+import 'package:bike_rental/data/repositories/bike/bike_repository.dart';
+import 'package:bike_rental/data/repositories/bike/bike_repository_firebase.dart';
 import 'package:bike_rental/data/repositories/station/station_repository.dart';
 import 'package:bike_rental/data/repositories/station/station_repository_firebase.dart';
 import 'package:bike_rental/ui/states/app_theme_state.dart';
@@ -18,7 +20,7 @@ List<InheritedProvider> get prodProviders {
     Provider<PassRepository>(create: (_) => PassRepositoryFirebase()),
     Provider<UserRepository>(create: (_) => UserRepositoryFirebase()),
     Provider<StationRepository>(create: (_) => StationRepositoryFirebase()),
-    //Provider<BikeRepository>(create: (_) => BikeRepositoryFirebase()),
+    Provider<BikeRepository>(create: (_) => BikeRepositoryFirebase()),
 
     // 2 - Inject global states
     ChangeNotifierProvider<GlobalPassState>(create: (_) => GlobalPassState()),

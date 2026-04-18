@@ -45,21 +45,10 @@ class BikeRepositoryFirebase implements BikeRepository {
   @override
   Future<List<Bike>> fetchBikesByStation(String stationId) async {
     try {
-      final url = bikesUrl.replace(
-        queryParameters: {'orderBy': '"stationId"', 'equalTo': '"$stationId"'},
-      );
-      final response = await http.get(url);
-      if (response.statusCode == 200 && response.body != 'null') {
-        final data = json.decode(response.body);
-        if (data is Map<String, dynamic>) {
-          return data.entries
-              .map((e) => BikeDto.fromJson(e.key, e.value))
-              .toList();
-        }
-      }
-      return [];
+      final allBikes = await fetchAllBikes();
+      return allBikes.where((b) => b.stationId == stationId).toList();
     } catch (e) {
-      throw Exception('Failed to load bikes for station $stationId: $e');
+      throw Exception('Failed to fetch bikes for station $stationId: $e');
     }
   }
 }

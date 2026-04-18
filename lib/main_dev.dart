@@ -1,3 +1,5 @@
+import 'package:bike_rental/data/repositories/bike/bike_repository.dart';
+import 'package:bike_rental/data/repositories/bike/bike_repository_mock.dart';
 import 'package:bike_rental/data/repositories/station/station_repository.dart';
 import 'package:bike_rental/data/repositories/station/station_repository_mock.dart';
 import 'package:bike_rental/data/repositories/pass/pass_mock_repository.dart';
@@ -18,7 +20,7 @@ List<InheritedProvider> get devProviders {
     Provider<PassRepository>(create: (_) => MockPassRepository()),
     Provider<UserRepository>(create: (_) => UserRepositoryMock()),
     Provider<StationRepository>(create: (_) => StationRepositoryMock()),
-    //Provider<BikeRepository>(create: (_) => MockBikeRepository()),
+    Provider<BikeRepository>(create: (_) => BikeRepositoryMock()),
 
     // 2 - Inject global states
     ChangeNotifierProvider<GlobalPassState>(create: (_) => GlobalPassState()),
