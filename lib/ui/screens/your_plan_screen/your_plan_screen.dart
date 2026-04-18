@@ -1,4 +1,3 @@
-import 'package:bike_rental/ui/screens/pass_selection_screen/pass_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bike_rental/ui/widgets/primary_button.dart';
@@ -65,20 +64,16 @@ class YourPlanScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: PrimaryButton(
-          label: "Cancel plan",
+          label: activePass != null ? "Cancel plan" : "Browse plan",
           onPressed: () {
-            // Clear active pass
-            activePassState.clearActivePass();
+            if (activePass != null) {
+              activePassState.clearActivePass();
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text("Plan cancelled")));
+            }
 
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text("Plan cancelled")));
-
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (_) => const SubscriptionScreen()),
-              (route) => route.isFirst,
-            );
+            Navigator.pop(context, 1);
           },
         ),
       ),

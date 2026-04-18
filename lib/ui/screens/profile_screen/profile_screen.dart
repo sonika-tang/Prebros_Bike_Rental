@@ -1,5 +1,5 @@
 import 'package:bike_rental/data/repositories/user/user_repository.dart';
-import 'package:bike_rental/ui/screens/your_plan_screen/your_plan_screen.dart';
+import 'package:bike_rental/main_common.dart';
 import 'package:bike_rental/ui/screens/profile_screen/view_model/profile_vm.dart';
 import 'package:bike_rental/ui/states/app_theme_state.dart';
 import 'package:bike_rental/ui/utils/async_value.dart';
@@ -74,12 +74,10 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const YourPlanScreen(),
-                        ),
-                      );
+                      // Ask MyApp to handle navigation so it can catch the result
+                      context
+                          .findAncestorStateOfType<MyAppState>()
+                          ?.handleNavigationResult(context);
                     },
                   ),
                   // History
