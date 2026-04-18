@@ -1,7 +1,6 @@
 import 'package:bike_rental/models/pass.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/intl.dart';
 
 class GlobalPassState extends ChangeNotifier {
   Pass? _activePass;
@@ -30,11 +29,5 @@ class GlobalPassState extends ChangeNotifier {
     final start = formatDate(activePass!.startDate);
     final end = formatDate(activePass!.endDate);
     return "Start: $start\nEnd: $end";
-  }
-
-  /// Toggle app theme between light and dark
-  void toggleTheme() {
-    _isDarkMode = !_isDarkMode;
-    notifyListeners();
   }
 }
