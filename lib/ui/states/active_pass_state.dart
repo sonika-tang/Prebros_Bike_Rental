@@ -4,12 +4,27 @@ import 'package:intl/intl.dart';
 
 class GlobalPassState extends ChangeNotifier {
   Pass? _activePass;
+  Map<String, dynamic>? _activeRide;
 
   Pass? get activePass => _activePass;
+  Map<String, dynamic>? get activeRide => _activeRide;
+
+  bool get hasActivePass => _activePass != null;
+  bool get hasActiveRide => _activeRide != null;
 
   /// Set the active pass (after purchase or retrieval from backend)
   void setActivePass(Pass pass) {
     _activePass = pass;
+    notifyListeners();
+  }
+
+  void setActiveRide(Map<String, dynamic>? ride) {
+    _activeRide = ride;
+    notifyListeners();
+  }
+
+  void clearActiveRide() {
+    _activeRide = null;
     notifyListeners();
   }
 

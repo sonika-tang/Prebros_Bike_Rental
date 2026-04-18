@@ -1,6 +1,9 @@
+import 'package:bike_rental/data/repositories/bike/bike_repository.dart';
+import 'package:bike_rental/models/bike.dart';
 import 'package:bike_rental/ui/screens/map_screen/view_model/map_vm.dart';
 import 'package:bike_rental/ui/screens/map_screen/widgets/station_list_view.dart';
 import 'package:bike_rental/ui/screens/station_details_screen/station_detail_screen.dart';
+import 'package:bike_rental/ui/states/active_pass_state.dart';
 import 'package:bike_rental/ui/utils/async_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -13,6 +16,8 @@ class MapContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<MapVm>();
+    final activePassState = context.watch<GlobalPassState>();
+    final activeRide = activePassState.activeRide ?? vm.activeRide;
 
     return Scaffold(
       body: SafeArea(
@@ -33,12 +38,12 @@ class MapContent extends StatelessWidget {
             ),
 
             // Bottom layer: Active Ride Bar (Mock)
-            if (vm.activeRide != null)
+            if (activeRide != null)
               Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
-                child: _buildActiveRideBar(context, vm.activeRide!),
+                child: _buildActiveRideBar(context, activeRide),
               ),
 
             // Loading overlay
@@ -209,7 +214,10 @@ class MapContent extends StatelessWidget {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
+                    final bikeId = ride['bikeId'];
                     context.read<MapVm>().returnBike();
+                    context.read<GlobalPassState>().clearActiveRide();
+                    context.read<BikeRepository>().updateBikeStatus(bikeId, BikeStatus.available);
                     Navigator.pop(context); // Close bottom sheet
                   },
                   style: ElevatedButton.styleFrom(

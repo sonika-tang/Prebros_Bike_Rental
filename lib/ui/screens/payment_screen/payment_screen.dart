@@ -1,3 +1,5 @@
+import 'package:bike_rental/models/booking.dart';
+import 'package:bike_rental/ui/screens/confirmation_details_screen/confirmation_details_screen.dart';
 import 'package:bike_rental/ui/states/active_pass_state.dart';
 import 'package:bike_rental/ui/widgets/active_pass.dart';
 import 'package:bike_rental/ui/widgets/primary_button.dart';
@@ -7,8 +9,9 @@ import '../../../../models/pass.dart';
 
 class PaymentSuccessScreen extends StatelessWidget {
   final Pass pass;
+  final Booking? booking;
 
-  const PaymentSuccessScreen({super.key, required this.pass});
+  const PaymentSuccessScreen({super.key, required this.pass, this.booking});
 
   @override
   Widget build(BuildContext context) {
@@ -17,57 +20,77 @@ class PaymentSuccessScreen extends StatelessWidget {
     final activePass = activePassState.activePass;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          "Choose Your Plan",
-          style: Theme.of(context).textTheme.headlineMedium,
-          textAlign: TextAlign.center,
+        title: const Text(
+          "Success",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              child: Icon(Icons.check, color: Theme.of(context).colorScheme.onSecondary, size: 50),
-            ),
-            const SizedBox(height: 20),
-
-            Text(
-              "Payment Successful!",
-              style: Theme.of(context).textTheme.headlineMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "You are subscribed to ${pass.typeName}.",
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-
-            if (activePass != null)
-              SizedBox(
-                width: double.infinity, 
-                child: ActivePass(activePass: activePass, activePassState: activePassState),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: colorScheme.secondary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_circle,
+                  color: colorScheme.secondary,
+                  size: 100,
+                ),
               ),
-          ],
+              const SizedBox(height: 40),
+              Text(
+                "Payment Successful!",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.primary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "You have successfully purchased the ${pass.typeName}.",
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 48),
+              if (activePass != null)
+                ActivePass(activePass: activePass, activePassState: activePassState),
+            ],
+          ),
         ),
       ),
-
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(24),
         child: PrimaryButton(
-          label: "Done",
+          label: "Continue",
           onPressed: () {
-            Navigator.popUntil(context, (route) => route.isFirst);
+            if (booking != null) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ConfirmationDetailsScreen(booking: booking!),
+                ),
+              );
+            } else {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            }
           },
         ),
       ),

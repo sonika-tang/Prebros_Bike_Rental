@@ -51,4 +51,16 @@ class BikeRepositoryFirebase implements BikeRepository {
       throw Exception('Failed to fetch bikes for station $stationId: $e');
     }
   }
+  
+  @override
+  Future<void> updateBikeStatus(String id, BikeStatus status) async {
+    final url = baseUri.replace(path: '/bikes/$id.json');
+    final response = await http.patch(
+      url,
+      body: json.encode({'status': status.name}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update bike status: ${response.body}');
+    }
+  }
 }
