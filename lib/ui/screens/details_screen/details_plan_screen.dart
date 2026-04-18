@@ -1,3 +1,4 @@
+import 'package:bike_rental/models/booking.dart';
 import 'package:bike_rental/ui/screens/pass_selection_screen/view_model/pass_selection_vm.dart';
 import 'package:bike_rental/ui/screens/payment_screen/payment_screen.dart';
 import 'package:bike_rental/ui/widgets/plan_details_card.dart';
@@ -8,8 +9,9 @@ import '../../../../models/pass.dart';
 
 class PlanDetailsScreen extends StatelessWidget {
   final Pass pass;
+  final Booking? booking;
 
-  const PlanDetailsScreen({super.key, required this.pass});
+  const PlanDetailsScreen({super.key, required this.pass, this.booking});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,7 @@ class PlanDetailsScreen extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (_) => PaymentSuccessScreen(pass: pass),
+                builder: (_) => PaymentSuccessScreen(pass: pass, booking: booking),
               ),
             );
           },

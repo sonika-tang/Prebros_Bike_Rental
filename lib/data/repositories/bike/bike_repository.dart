@@ -4,4 +4,5 @@ abstract class BikeRepository {
   Future<List<Bike>> fetchAllBikes();
   Future<List<Bike>> fetchBikesByStation(String stationId);
   Future<Bike?> fetchBikeById(String id);
+  Future<void> updateBikeStatus(String id, BikeStatus status);
 }

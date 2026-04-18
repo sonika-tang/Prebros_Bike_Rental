@@ -18,6 +18,8 @@ class Pass {
   // Helper for UI based on PassType
   String get typeName {
     switch (type) {
+      case PassType.single:
+        return "Single Ticket";
       case PassType.day:
         return "1-Day Pass";
       case PassType.weekly:
@@ -30,4 +32,4 @@ class Pass {
   }
 }
 
-enum PassType { day, weekly, monthly, annual }
+enum PassType { single, day, weekly, monthly, annual }

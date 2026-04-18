@@ -121,6 +121,8 @@ class PlanDetailsCard extends StatelessWidget {
 
   String _validityText(PassType type) {
     switch (type) {
+      case PassType.single:
+        return "Single ride (UP to 30 mins)";
       case PassType.day:
         return "24 hours";
       case PassType.weekly:

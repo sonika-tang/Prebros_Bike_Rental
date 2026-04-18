@@ -52,6 +52,9 @@ class PassSelectionViewModel extends ChangeNotifier {
         case PassType.annual:
           end = now.add(const Duration(days: 365));
           break;
+        case PassType.single:
+          end = now.add(const Duration(hours: 24));
+          break;
       }
 
       // Create updated pass with start/end dates

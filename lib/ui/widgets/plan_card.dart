@@ -5,7 +5,7 @@ import '../../../../models/pass.dart';
 class PlanCard extends StatelessWidget {
   final Pass pass;
   final bool isActive;
-  final VoidCallback onSelect; 
+  final VoidCallback onSelect;
   const PlanCard({
     super.key,
     required this.pass,
@@ -95,6 +95,8 @@ class PlanCard extends StatelessWidget {
         return "Valid for 1 month";
       case PassType.annual:
         return "Valid for 1 year";
+      case PassType.single:
+        return "Single Ticket";
     }
   }
 }

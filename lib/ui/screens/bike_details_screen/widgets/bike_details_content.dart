@@ -1,8 +1,16 @@
+import 'package:bike_rental/models/bike.dart';
 import 'package:bike_rental/ui/screens/bike_details_screen/widgets/current_pass_card.dart';
 import 'package:bike_rental/ui/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bike_rental/ui/screens/bike_details_screen/view_model/bike_details_vm.dart';
+import 'package:bike_rental/ui/screens/required_pass_screen/required_pass_screen.dart';
+import 'package:bike_rental/ui/screens/confirmation_details_screen/confirmation_details_screen.dart';
+import 'package:bike_rental/ui/screens/pass_selection_screen/view_model/pass_selection_vm.dart';
+import 'package:bike_rental/ui/screens/details_screen/details_plan_screen.dart';
+import 'package:bike_rental/data/repositories/pass/pass_repository.dart';
+import 'package:bike_rental/ui/states/active_pass_state.dart';
+import 'package:bike_rental/models/pass.dart';
 
 class BikeDetailContent extends StatelessWidget {
   const BikeDetailContent({super.key});
@@ -10,6 +18,7 @@ class BikeDetailContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<BikeDetailVm>();
+    final activePassState = context.watch<GlobalPassState>();
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -79,7 +88,19 @@ class BikeDetailContent extends StatelessWidget {
                             const Divider(),
                             SizedBox(height: 15),
                             _buildInfoRow("Station", "Central Park"),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
+                            const Divider(),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                              "Status",
+                              vm.currentBike.status.name.toUpperCase(),
+                              valueColor: vm.currentBike.status == BikeStatus.available
+                                  ? Colors.green
+                                  : vm.currentBike.status == BikeStatus.pending
+                                      ? Colors.orange
+                                      : Colors.red,
+                            ),
+                            const SizedBox(height: 15),
                             const Divider(),
                           ],
                         ),
@@ -105,13 +126,53 @@ class BikeDetailContent extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  if (vm.hasActivePass) ...[
+                  if (activePassState.hasActiveRide) ...[
+                     const Padding(
+                       padding: EdgeInsets.all(8.0),
+                       child: Text(
+                         "You already have an active ride. Please return your current bike before booking another one.",
+                         style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                         textAlign: TextAlign.center,
+                       ),
+                     ),
+                     const SizedBox(height: 12),
+                     SizedBox(
+                       width: double.infinity,
+                       child: PrimaryButton(
+                         label: "Back to Map",
+                         onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
+                       ),
+                     ),
+                  ] else if (vm.currentBike.status != BikeStatus.available) ...[
+                     Padding(
+                       padding: const EdgeInsets.all(8.0),
+                       child: Text(
+                         "This bike is currently ${vm.currentBike.status.name.toUpperCase()}. Please select another bike.",
+                         style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                         textAlign: TextAlign.center,
+                       ),
+                     ),
+                     const SizedBox(height: 12),
+                     SizedBox(
+                       width: double.infinity,
+                       child: PrimaryButton(
+                         label: "Back to Map",
+                         onPressed: () => Navigator.pop(context),
+                       ),
+                     ),
+                  ] else if (vm.hasActivePass) ...[
                     SizedBox(
                       width: double.infinity,
                       child: PrimaryButton(
                         label: "Unlock bike",
                         onPressed: () {
-                          // Unlock bike logic
+                          final booking = vm.createBooking();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ConfirmationDetailsScreen(booking: booking),
+                            ),
+                          );
                         },
                       ),
                     ),
@@ -121,7 +182,13 @@ class BikeDetailContent extends StatelessWidget {
                       child: PrimaryButton(
                         label: "Buy Pass",
                         onPressed: () {
-                          // Navigate to buy pass
+                          final booking = vm.createBooking();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => RequiredPassScreen(booking: booking),
+                            ),
+                          );
                         },
                       ),
                     ),
@@ -130,7 +197,32 @@ class BikeDetailContent extends StatelessWidget {
                       width: double.infinity,
                       child: OutlinedButton(
                         onPressed: () {
-                          // Navigate to buy single ticket
+                          final booking = vm.createBooking();
+                          // For single ticket, we navigate directly to details
+                          final singleTicket = Pass(
+                            passId: 'cat_single',
+                            type: PassType.single,
+                            price: 1.0,
+                            startDate: null,
+                            endDate: null,
+                            isActive: false,
+                          );
+                          
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ChangeNotifierProvider(
+                                create: (context) => PassSelectionViewModel(
+                                  repository: context.read<PassRepository>(),
+                                  globalPassState: context.read<GlobalPassState>(),
+                                ),
+                                child: PlanDetailsScreen(
+                                  pass: singleTicket,
+                                  booking: booking,
+                                ),
+                              ),
+                            ),
+                          );
                         },
                         child: const Text("Buy single ticket"),
                       ),
@@ -148,12 +240,18 @@ class BikeDetailContent extends StatelessWidget {
   }
 }
 
-Widget _buildInfoRow(String label, String value) {
+Widget _buildInfoRow(String label, String value, {Color? valueColor}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(label, style: const TextStyle(color: Colors.grey)),
-      Text(value, style: const TextStyle(fontWeight: FontWeight.w500)),
+      Text(
+        value,
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          color: valueColor ?? Colors.black,
+        ),
+      ),
     ],
   );
 }

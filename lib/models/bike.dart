@@ -9,6 +9,18 @@ class Bike {
     required this.status,
   });
 
+  Bike copyWith({
+    String? bikeId,
+    String? stationId,
+    BikeStatus? status,
+  }) {
+    return Bike(
+      bikeId: bikeId ?? this.bikeId,
+      stationId: stationId ?? this.stationId,
+      status: status ?? this.status,
+    );
+  }
+
   Object? toJson() {
     return {
       'bikeId': bikeId,
