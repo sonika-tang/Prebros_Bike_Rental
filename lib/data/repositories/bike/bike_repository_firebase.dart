@@ -6,8 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class BikeRepositoryFirebase implements BikeRepository {
-  static final Uri baseUri = Uri.https(dotenv.env['FIREBASE_DB_URL'] ?? '', '');
-  static final Uri bikesUrl = baseUri.replace(path: '/bikes.json');
+  static final String baseUrl = dotenv.env['FIREBASE_DB_URL'] ?? '';
+  static Uri get bikesUrl => Uri.parse('https://$baseUrl/bikes.json');
 
   @override
   Future<List<Bike>> fetchAllBikes() async {
@@ -30,7 +30,7 @@ class BikeRepositoryFirebase implements BikeRepository {
   @override
   Future<Bike?> fetchBikeById(String id) async {
     try {
-      final url = baseUri.replace(path: '/bikes/$id.json');
+      final url = Uri.parse('https://$baseUrl/bikes/$id.json');
       final response = await http.get(url);
       if (response.statusCode == 200 && response.body != 'null') {
         final data = json.decode(response.body);
@@ -54,7 +54,7 @@ class BikeRepositoryFirebase implements BikeRepository {
   
   @override
   Future<void> updateBikeStatus(String id, BikeStatus status) async {
-    final url = baseUri.replace(path: '/bikes/$id.json');
+    final url = Uri.parse('https://$baseUrl/bikes/$id.json');
     final response = await http.patch(
       url,
       body: json.encode({'status': status.name}),

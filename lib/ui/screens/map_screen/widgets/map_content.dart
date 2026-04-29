@@ -1,4 +1,5 @@
 import 'package:bike_rental/data/repositories/bike/bike_repository.dart';
+import 'package:bike_rental/models/active_ride.dart';
 import 'package:bike_rental/models/bike.dart';
 import 'package:bike_rental/ui/screens/map_screen/view_model/map_vm.dart';
 import 'package:bike_rental/ui/screens/map_screen/widgets/station_list_view.dart';
@@ -17,19 +18,19 @@ class MapContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<MapVm>();
     final activePassState = context.watch<GlobalPassState>();
+
+    // GlobalPassState is the single source of truth for active ride
     final activeRide = activePassState.activeRide ?? vm.activeRide;
 
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            // Base layer: Map or List
             if (vm.isMapView)
               _buildMap(context, vm)
             else
               const StationListView(),
 
-            // Top layer: Search Bar
             Positioned(
               top: 16,
               left: 16,
@@ -37,7 +38,6 @@ class MapContent extends StatelessWidget {
               child: _buildSearchBar(context, vm),
             ),
 
-            // Bottom layer: Active Ride Bar (Mock)
             if (activeRide != null)
               Positioned(
                 bottom: 0,
@@ -46,8 +46,7 @@ class MapContent extends StatelessWidget {
                 child: _buildActiveRideBar(context, activeRide),
               ),
 
-            // Loading overlay
-            if (vm.stationsState.state == AsyncValueState.loading) 
+            if (vm.stationsState.state == AsyncValueState.loading)
               const Center(child: CircularProgressIndicator())
             else if (vm.stationsState.state == AsyncValueState.error)
               Center(child: Text('Error: ${vm.stationsState.error}')),
@@ -58,7 +57,6 @@ class MapContent extends StatelessWidget {
   }
 
   Widget _buildMap(BuildContext context, MapVm vm) {
-    // Convert stations to markers
     final markers = vm.filteredStations.map((station) {
       final isAvailable = station.availableBikesCount > 0;
       return Marker(
@@ -68,13 +66,11 @@ class MapContent extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: GestureDetector(
           onTap: () {
-            // Push Station Detail Screen
-            final mapVm = context.read<MapVm>();
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => ChangeNotifierProvider.value(
-                  value: mapVm,
+                  value: context.read<MapVm>(),
                   child: StationDetailScreen(station: station),
                 ),
               ),
@@ -90,7 +86,10 @@ class MapContent extends StatelessWidget {
                       ? Theme.of(context).colorScheme.secondary
                       : Theme.of(context).colorScheme.primary,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Theme.of(context).colorScheme.onPrimary, width: 2),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    width: 2,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.26),
@@ -102,9 +101,9 @@ class MapContent extends StatelessWidget {
                 child: Text(
                   '${station.availableBikesCount}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
               Icon(
@@ -120,7 +119,6 @@ class MapContent extends StatelessWidget {
       );
     }).toList();
 
-    // Add user location if present
     if (vm.currentUserLocation != null) {
       markers.add(
         Marker(
@@ -131,9 +129,15 @@ class MapContent extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               shape: BoxShape.circle,
-              border: Border.all(color: Theme.of(context).colorScheme.onPrimary, width: 3),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.onPrimary,
+                width: 3,
+              ),
               boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.26), blurRadius: 4),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.26),
+                  blurRadius: 4,
+                ),
               ],
             ),
           ),
@@ -143,7 +147,7 @@ class MapContent extends StatelessWidget {
 
     return FlutterMap(
       options: const MapOptions(
-        initialCenter: LatLng(11.576089, 104.923055), // Phnom Penh coordinate
+        initialCenter: LatLng(11.576089, 104.923055),
         initialZoom: 14,
       ),
       children: [
@@ -173,11 +177,20 @@ class MapContent extends StatelessWidget {
         onChanged: vm.setSearchQuery,
         decoration: InputDecoration(
           hintText: "Search for station...",
-          prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54)),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Theme.of(context)
+                .colorScheme
+                .onSurface
+                .withValues(alpha: 0.54),
+          ),
           suffixIcon: IconButton(
             icon: Icon(
               vm.isMapView ? Icons.list : Icons.map,
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.54),
             ),
             onPressed: vm.toggleView,
           ),
@@ -191,7 +204,7 @@ class MapContent extends StatelessWidget {
     );
   }
 
-  Widget _buildActiveRideBar(BuildContext context, Map<String, dynamic> ride) {
+  Widget _buildActiveRideBar(BuildContext context, ActiveRide ride) {
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -209,16 +222,17 @@ class MapContent extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 16),
-                Text('Bike ID: ${ride['bikeId']}'),
-                Text('Station: ${ride['stationName']}'),
+                Text('Bike ID: ${ride.bikeId}'),
+                Text('Station: ${ride.stationName}'),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
-                    final bikeId = ride['bikeId'];
                     context.read<MapVm>().returnBike();
                     context.read<GlobalPassState>().clearActiveRide();
-                    context.read<BikeRepository>().updateBikeStatus(bikeId, BikeStatus.available);
-                    Navigator.pop(context); // Close bottom sheet
+                    context
+                        .read<BikeRepository>()
+                        .updateBikeStatus(ride.bikeId, BikeStatus.available);
+                    Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.error,
@@ -244,24 +258,31 @@ class MapContent extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.pedal_bike, color: Theme.of(context).colorScheme.onPrimary, size: 40),
+                Icon(
+                  Icons.pedal_bike,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  size: 40,
+                ),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Bike ID: ${ride['bikeId']}",
+                      "Bike ID: ${ride.bikeId}",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     Text(
-                      "Station: ${ride['stationName']}\nBike slot: ${ride['slot']}",
+                      "Station: ${ride.stationName}\nBike slot: ${ride.slot}",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
-                      ),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimary
+                                .withValues(alpha: 0.8),
+                          ),
                     ),
                   ],
                 ),
@@ -270,9 +291,9 @@ class MapContent extends StatelessWidget {
             Text(
               "Active",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.secondary,
-                fontWeight: FontWeight.bold,
-              ),
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ],
         ),

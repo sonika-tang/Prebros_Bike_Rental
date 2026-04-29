@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:bike_rental/models/active_ride.dart';
 import 'package:bike_rental/models/booking.dart';
-import 'package:provider/provider.dart';
-import 'package:bike_rental/ui/states/active_pass_state.dart';
 import 'package:bike_rental/models/bike.dart';
 import 'package:bike_rental/data/repositories/bike/bike_repository.dart';
+import 'package:bike_rental/ui/states/active_pass_state.dart';
+import 'package:provider/provider.dart';
 
 class ConfirmationDetailsVm extends ChangeNotifier {
   final Booking booking;
@@ -29,13 +30,10 @@ class ConfirmationDetailsVm extends ChangeNotifier {
   }
 
   void _updateRemaining() {
-    final now = DateTime.now();
-    final diff = booking.unlockValidUntil.difference(now).inSeconds;
+    final diff = booking.unlockValidUntil.difference(DateTime.now()).inSeconds;
     remainingSeconds = diff > 0 ? diff : 0;
     notifyListeners();
-    if (remainingSeconds == 0) {
-      _timer?.cancel();
-    }
+    if (remainingSeconds == 0) _timer?.cancel();
   }
 
   @override
@@ -45,25 +43,22 @@ class ConfirmationDetailsVm extends ChangeNotifier {
   }
 
   void cancelBooking() {
-    // Cancel booking logic
     debugPrint("Cancel booking: ${booking.bookingId}");
   }
 
   void pickupBike(BuildContext context) {
-    // Simulate pickup
     debugPrint("Picking up bike: ${booking.bikeId}");
-    
-    final globalState = context.read<GlobalPassState>();
-    globalState.setActiveRide({
-      'bikeId': booking.bikeId,
-      'stationName': booking.stationName,
-      'slot': '1', // Mock slot
-    });
 
-    // Update bike status to booked
+    context.read<GlobalPassState>().setActiveRide(
+          ActiveRide(
+            bikeId: booking.bikeId,
+            stationName: booking.stationName,
+            slot: '1',
+          ),
+        );
+
     _bikeRepository.updateBikeStatus(booking.bikeId, BikeStatus.booked);
 
-    // Navigate back to map (which is the first screen)
     Navigator.popUntil(context, (route) => route.isFirst);
   }
 }
